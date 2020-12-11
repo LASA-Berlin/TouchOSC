@@ -1,0 +1,33 @@
+
+EEPromData	KEYWORD1
+TouchOSC	KEYWORD1
+ 
+read	KEYWORD2
+send	KEYWORD2
+sendText	KEYWORD2
+
+readNonStop	KEYWORD2
+
+ControlNames	LITERAL1
+
+udprcvbuf_extract_float	KEYWORD2
+int udprcvbuf_extract_int	KEYWORD2
+String extract_value	KEYWORD2
+
+int_to_udpsendbuf	KEYWORD2
+float_to_udpsendbuf	KEYWORD2
+format_to_udpsendbuf	KEYWORD2
+clear_udpsendbuf	KEYWORD2
+
+int setup_udp_send_buffer	KEYWORD2
+int setup_udp_send_buffer_text	KEYWORD2
+send_udp_buffer	KEYWORD2
+
+parse_udp	KEYWORD2
+
+runtime	KEYWORD2
+chores_and_timeouts	KEYWORD2
+init_eeprom_ap	KEYWORD2
+write_eeprom	KEYWORD2
+initNetwork	KEYWORD2
+check_for_new_client	KEYWORD2
