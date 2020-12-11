@@ -71,3 +71,11 @@ textstr: Der zu sende Text
 void readNonStop();
 ```
 Gibt empfangene Packete auf dem Serielen Monitor wieder 
+
+```c++
+enum { t_none, t_page, t_label, t_led, t_toggle, t_push, t_fader,
+       t_rotary, t_multitoggle, t_multipush, t_multifader, t_xypad
+     };
+```
+Dieses enum ist im Header eingetragen und ermöglicht das nutzten dieser Namen in `send(int type)` statt Ziffern zu schreiben
+Ähnliches lässt sich auch mit den ID's machen und vereinfacht das lesen des Codes
