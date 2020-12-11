@@ -31,23 +31,27 @@ Methoden:
 ```c++
 void read(String *controlTyp, int *parameternummer, int *idx1, int *idx2, int *val_1, int *val_2);
 ```
-controlTyp: Names des Element
-parameternummer: eindeutige ID
-idx1: Index 1 für Multibuttons und Fader
-idx2: Index 2 für Multibuttons
-val_1: Ausgelesende Wert des entsprechendes Element
-val_2: Zweiter wert das XY-Pad
-nimmt Adressen, bzw Pointer von bis zu 6 verschiedenen Varriabeln und liefert entsprechende Parameter zurück
-Für nicht verwendete Parameter einfach die Varriable als Argument initialieseren
-read() ruft noch runtime() auf für Timeouts und andere Hintergrundsprosesse 
+Liest UDP-Packet welche vom TouchOSC gesendet werden und liefert Parameter auf entsprechende Adressen
+Nimmt Adressen, bzw Pointer von bis zu 6 verschiedenen Varriabeln und liefert entsprechende Parameter zurück  
+Für nicht verwendete Parameter einfach die Varriable als Argument initialieseren  
+read() ruft noch runtime() auf für Timeouts und andere Hintergrundsprosesse  
 
+controlTyp: Names des Element  
+parameternummer: eindeutige ID  
+idx1: Index 1 für Multibuttons und Fader  
+idx2: Index 2 für Multibuttons  
+val_1: Ausgelesende Wert des entsprechendes Element  
+val_2: Zweiter wert das XY-Pad  
 ```c++
 void send(int type, int param, int idx_1, int idx_2, int val_1, int val_2);
 ```
-type: Typ-Nummer nach ControlNames[], kann via der enum im Header ausgewählt werden `0 = t_none, 1 = t_page, 2 = t_label, 3 = t_led, 4 = t_toggle, 5 = t_push, 6 = t_fader, 7 = t_rotary, 8 = t_multitoggle, 9 = t_multipush, 10 = t_multifader, 11 = t_xypad`
-param: Eindeutige ID des Bedienfeldes
-idx_1: Index, falls es sich um einen Button oder Fader handelt, sonst auf -1 setzten
-idx_2: Index, falls eine Matrix aus Buttons angesprochen wird, sonst auf -1 setzten,
-val_1: Wert auf den das Element gesetzt werden soll
-val_2: Zweiter Wert falls benötigt, sonst auf -1 setzten
+Sendet Werte an spezifisiertes Bedienfled  
+
+type: Typ-Nummer nach ControlNames[], kann via der enum im Header ausgewählt werden  
+`0 = t_none, 1 = t_page, 2 = t_label, 3 = t_led, 4 = t_toggle, 5 = t_push, 6 = t_fader, 7 = t_rotary, 8 = t_multitoggle, 9 = t_multipush, 10 = t_multifader, 11 = t_xypad`  
+param: Eindeutige ID des Bedienfeldes  
+idx_1: Index, falls es sich um einen Button oder Fader handelt, sonst auf -1 setzten  
+idx_2: Index, falls eine Matrix aus Buttons angesprochen wird, sonst auf -1 setzten  
+val_1: Wert auf den das Element gesetzt werden soll  
+val_2: Zweiter Wert falls benötigt, sonst auf -1 setzten  
   
