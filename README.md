@@ -24,12 +24,12 @@ Konstruktor für TouchOSC Klasse
 ```c++
 ToushOSC obj(int port)
 ```
-osc: name des objektes
+obj: name des objektes
 port: Port für UDP (in der App standartmäßig 8000)
 
 Methoden:
 ```c++
-void osc.read(String *controlTyp, int *parameternummer, int *idx1, int *idx2, int *val_1, int *val_2);
+void read(String *controlTyp, int *parameternummer, int *idx1, int *idx2, int *val_1, int *val_2);
 ```
 controlTyp: Names des Element
 parameternummer: eindeutige ID
@@ -37,12 +37,12 @@ idx1: Index 1 für Multibuttons und Fader
 idx2: Index 2 für Multibuttons
 val_1: Ausgelesende Wert des entsprechendes Element
 val_2: Zweiter wert das XY-Pad
-nimmt Adressen von bis zu 6 verschiedenen Varriabeln und liefert entsprechende Parameter zurück
+nimmt Adressen, bzw Pointer von bis zu 6 verschiedenen Varriabeln und liefert entsprechende Parameter zurück
 Für nicht verwendete Parameter einfach die Varriable als Argument initialieseren
 read() ruft noch runtime() auf für Timeouts und andere Hintergrundsprosesse 
 
 ```c++
-void osc.send(int type, int param, int idx_1, int idx_2, int val_1, int val_2);
+void send(int type, int param, int idx_1, int idx_2, int val_1, int val_2);
 ```
 type: Typ-Nummer nach ControlNames[], kann via der enum im Header ausgewählt werden `0 = t_none, 1 = t_page, 2 = t_label, 3 = t_led, 4 = t_toggle, 5 = t_push, 6 = t_fader, 7 = t_rotary, 8 = t_multitoggle, 9 = t_multipush, 10 = t_multifader, 11 = t_xypad`
 param: Eindeutige ID des Bedienfeldes
