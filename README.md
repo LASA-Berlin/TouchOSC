@@ -20,14 +20,14 @@ Da die App nur einmal sendet wenn ein Bedienelement verstellt wird sollte durchg
 
 Hier eine kurze Referenz zu den Funktionen in der Klasse TouchOSC
 
-Konstruktor für TouchOSC Klasse
+## Konstruktor für TouchOSC Klasse
 ```c++
 ToushOSC obj(int port)
 ```
 obj: name des objektes
 port: Port für UDP (in der App standartmäßig 8000)
 
-Methoden:
+## Methoden:
 ```c++
 void read(String *controlTyp, int *parameternummer, int *idx1, int *idx2, int *val_1, int *val_2);
 ```
@@ -54,4 +54,11 @@ idx_1: Index, falls es sich um einen Button oder Fader handelt, sonst auf -1 set
 idx_2: Index, falls eine Matrix aus Buttons angesprochen wird, sonst auf -1 setzten  
 val_1: Wert auf den das Element gesetzt werden soll  
 val_2: Zweiter Wert falls benötigt, sonst auf -1 setzten  
-  
+```c++
+void sendText(int type, int param, String textstr);
+```
+Gedacht um Texte an Labels zu schicken  
+
+type: Typ des Bedienfeldes, hier eigentlich immer Label  
+param: Eindeutige ID des Bedienfeldes  
+textstr: Der zu sende Text
