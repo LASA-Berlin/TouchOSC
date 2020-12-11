@@ -24,7 +24,7 @@ Hier eine kurze Referenz zu den Funktionen in der Klasse TouchOSC
 ```c++
 ToushOSC obj(int port)
 ```
-obj: name des objektes
+obj: name des objektes  
 port: Port für UDP (in der App standartmäßig 8000)
 
 ## Methoden:
