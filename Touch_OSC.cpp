@@ -19,7 +19,7 @@ unsigned long last_millis_1s, last_millis_100ms, last_millis_10ms;  // Für Time
 
 IPAddress CurrentClientIP(0, 0, 0, 0);  // Default, kann sich nach Empfang ändern
 const IPAddress c_UnsetIP(0, 0, 0, 0);
-const int c_clients_max = 4;
+const int c_clients_max = 4;            // Setzt die maximal Anzahl an verbunden Clients
 
 IPAddress ClientIPs[c_clients_max];
 int ClientIPs_timer[c_clients_max];
@@ -28,28 +28,18 @@ int ClientIPs_idx = 0;
 
 
 
-TouchOSC::TouchOSC(int port) {
+TouchOSC::TouchOSC(int port) {          // Port für eingehende UDP-Packete
   initNetwork(port);
 }
 
 void TouchOSC::read(String *controlTyp, int *parameternummer, int *idx1, int *idx2, int *val_1, int *val_2) {
+  // Liest länge des UDP-Packets und gibt Adressen an parser_udp() weiter
+  // Lässt runtime() laufen für Hintergrundsprozzese
   int packet_size, udp_buf_len;
   packet_size = udp.parsePacket();
   if (packet_size) {
     udp.read(UDP_rcv_buffer, packet_size);  // read the packet into the buffer
     parse_udp(packet_size, controlTyp, parameternummer, idx1, idx2, val_1, val_2);
-    MON_MSG("controlTyp: ");
-    MON_MSG(*controlTyp);
-    MON_MSG(" parameternummer: ");
-    MON_MSG(*parameternummer);
-    MON_MSG(" idx1: ");
-    MON_MSG(*idx1);
-    MON_MSG(" idx2: ");
-    MON_MSG(*idx2);
-    MON_MSG(" val_1: ");
-    MON_MSG(*val_1);
-    MON_MSG(" val_2: ");
-    MON_MSGLN(*val_2);
   } else {
     // MON_MSGLN("kein Packet empfangen");
   }
@@ -57,6 +47,7 @@ void TouchOSC::read(String *controlTyp, int *parameternummer, int *idx1, int *id
 }
 
 void TouchOSC::send(int type, int param, int idx_1, int idx_2, int val_1, int val_2) {
+  // ruft nötige Funktion zum senden in der entsprechenden Reihenfolge auf und gibt Argumente weiter
   clear_udpsendbuf();
   int bufferLength = setup_udp_send_buffer(type, param, idx_1, idx_2, val_1, val_2);
   send_udp_buffer(bufferLength);
@@ -64,42 +55,43 @@ void TouchOSC::send(int type, int param, int idx_1, int idx_2, int val_1, int va
 }
 
 void TouchOSC::sendText(int type, int param, String textstr) {
+  // ruft nötige Funktion zum senden in der entsprechenden Reihenfolge auf und gibt Argumente weiter
   clear_udpsendbuf();
   int bufferLength = setup_udp_send_buffer_text(type, param, textstr);
   send_udp_buffer(bufferLength);
 }
 
 void TouchOSC::readNonStop() {
+  // Liest UDP Pakete damit alles einkommenden Werte auf dem Seriellen Monitor zu sehen sind
   String controlTyp;
   int parameternummer, idx1, idx2, val_1, val_2;
   read(&controlTyp, &parameternummer, &idx1, &idx2, &val_1, &val_2);
 }
 
-void TouchOSC::runtime() {    // Needs to be called regulary, for new inputs from TouchOSC
+void TouchOSC::runtime() {    
+  // Hintergrundsprozese
   check_for_new_client();
-  chores_and_timeouts(); // Timouts etc.
+  chores_and_timeouts();
 }
 
 float TouchOSC::udprcvbuf_extract_float(int idx) {
-  // holt Float-Bytes aus UDP_rcv_buffer und wandelt sie in Integer
+  // holt Float-Bytes aus UDP_rcv_buffer, wandelt sie in Integer und dreht die byte reihenfolge
   union {
     byte b[4];
     float f;
   } u;
   int n;
-  // Reihenfolge umkehren
   for ( n = 0 ; n < 4 ; n++ ) u.b[n] = UDP_rcv_buffer[idx + 3 - n];
   return (u.f); // in Integer 0..127 wandeln
 }
 
 int TouchOSC::udprcvbuf_extract_int(int idx) {
-  // holt Int-Bytes aus UDP_rcv_buffer und wandelt sie in Integer
+  // holt Int-Bytes aus UDP_rcv_buffer, wandelt sie in Integer und dreht die byte reihenfolge
   union {
     byte b[4];
     int32 i;
   } u;
   int n;
-  // Reihenfolge umkehren
   for ( n = 0 ; n < 4 ; n++ ) u.b[n] = UDP_rcv_buffer[idx + 3 - n];
   return (u.i); // in Integer 0..127 wandeln
 }
@@ -123,26 +115,26 @@ String TouchOSC::extract_value(String data, char separator, int index) {
 
 void TouchOSC::int_to_udpsendbuf(int *idx, int val) {
   // zum Umsetzen von Int32 in Bytes, schreibt in UDP_send_buffer
+  // Reihenfolge umdrehen
   union {
     byte b[4];
     int32 i32;
   } u;
   int i;
   u.i32 = val;
-  // Reihenfolge umdrehen
   for ( i = 0 ; i < 4 ; i++ ) UDP_send_buffer[*idx + 3 - i] = u.b[i];
   *idx += 4;
 }
 
 void TouchOSC::float_to_udpsendbuf(int *idx, float val) {
   // zum Umsetzen von Float in Bytes, schreibt in UDP_send_buffer
+  // Reihenfolge umdrehen
   union {
     byte b[4];
     float f32;
   } u;
   int i;
   u.f32 = val;
-  // Reihenfolge umdrehen
   for ( i = 0 ; i < 4 ; i++ ) UDP_send_buffer[*idx + 3 - i] = u.b[i];
   *idx += 4;
 }
@@ -160,6 +152,7 @@ void TouchOSC::format_to_udpsendbuf(int *idx, int count, char format_char) {
 }
 
 void TouchOSC::clear_udpsendbuf() {
+  // Setzt alles im Buffer auf 0
   int i;
   for (i = 0; i < ARRARY_SIZE; i++)
     UDP_send_buffer[i] = 0;
@@ -169,6 +162,7 @@ void TouchOSC::parse_udp(int packet_size,
                          String * controlTypPtr, int *parameterPtr,
                          int *idx1ptr, int *idx2ptr,
                          int *value1ptr, int *value2ptr) {
+  // Wertet UDP-Packete in Teile und werte diese aus
   int i, j, idx, send_udp, udp_buf_len;
   String  tempstr;
   float val_1 = 0;
@@ -308,6 +302,7 @@ void TouchOSC::send_udp_buffer(int bytes_to_send) {
 }
 
 void TouchOSC::init_eeprom_ap() {
+  // Bereitet eeprom vor
   strcpy(eePromData.ssid, "TouchOSC Bridge");
   strcpy(eePromData.password, "password");
   eePromData.udp_fb_others = 1; // default
@@ -318,6 +313,7 @@ void TouchOSC::init_eeprom_ap() {
 }
 
 void TouchOSC::initNetwork(int udpport) {
+  // setzt das Netzwerk auf
   int i, temp_ap_mode, len;
   char line_buf[100];
   int idx;
