@@ -45,7 +45,6 @@ idx2: Index 2 für Multibuttons
 val_1: Ausgelesende Wert des entsprechendes Element  
 val_2: Zweiter wert das XY-Pad  
 
-
 ```c++
 void send(int type, int param, int idx_1, int idx_2, int val_1, int val_2);
 ```
@@ -59,7 +58,6 @@ idx_2: Index, falls eine Matrix aus Buttons angesprochen wird, sonst auf -1 setz
 val_1: Wert auf den das Element gesetzt werden soll  
 val_2: Zweiter Wert falls benötigt, sonst auf -1 setzten  
 
-
 ```c++
 void sendText(int type, int param, String textstr);
 ```
@@ -68,3 +66,8 @@ Gedacht um Texte an Labels zu schicken
 type: Typ des Bedienfeldes, hier eigentlich immer Label  
 param: Eindeutige ID des Bedienfeldes  
 textstr: Der zu sende Text
+
+```c++
+void readNonStop();
+```
+Gibt empfangene Packete auf dem Serielen Monitor wieder 
