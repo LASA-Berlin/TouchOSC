@@ -1,0 +1,25 @@
+{
+    "name": "TouchOSC",
+    "version": "1.0.0",
+    "description": "Library for communicating between the TouchOSC-App and an ESP8266",
+    "keywords": "OSC, Open Sound Control",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/LASA-Berlin/TouchOSC.git"
+    },
+    "authors": [
+        {
+            "name": "Karlo Sanque",
+            "email": "karlo@lasa-berlin.de"
+        }
+    ],
+    "dependencies": {
+        "Arduino": "*",
+        "EEPROM": "*",
+        "WiFiUdp": "*",
+        "WiFiClient": "*",
+        "ESP8266WiFi": "*"
+    },
+    "frameworks": "*",
+    "platforms": "*"
+}
